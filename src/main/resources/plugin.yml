@@ -1,0 +1,22 @@
+name: Rename
+main: com.adognamedspot.rename.Rename
+version: ${project.version}
+author: A DoG NaMeD SpoT
+api-version: 1.19
+commands:
+   rename-reload:
+      description: Reloads the plugin configuration.
+      usage: /<command>
+      permission: <plugin name>.reload
+      permission-message: You don't have <permission>
+   rename:
+      description: Renames a single item.
+      usage: /<command> [new name (blank to clear)]
+      permission: <plugin name>.rename
+      permission-message: You don't have <permission>
+   renameall:
+      description: Renames a stack of items.
+      usage: /<command> [new name (blank to clear)]
+      permission: <plugin name>.renameall
+      permission-message: You don't have <permission>
+

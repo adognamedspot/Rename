@@ -1,0 +1,37 @@
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-
+#  Rename Configuration File
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+# Maximum allowed characters in an item's name
+# (remember this includes all & color codes as well)
+Max_Char: 122
+
+# Number of levels to charge to rename one item
+Rename_Cost: 1
+
+# Multi Rename Discount Type
+#    SINGLE = Single rate for each item
+#      FLAT = Flat Rate - All items charged at same Multi rate (42 items would all be charged @ 41-48 rate)
+#   PRORATE = ProRate - First item charged at Single rate (2-8 charged at 2-8, 9-16 etc etc)
+Multi_Rate: PRORATE
+
+# Discount to rename multiple items at once (discount applies to Rename_Cost for one item)
+Multi_2-8_Discount:   0.000
+Multi_9-16_Discount:  0.125
+Multi_17-24_Discount: 0.250
+Multi_25-32_Discount: 0.375
+Multi_33-40_Discount: 0.500
+Multi_41-48_Discount: 0.625
+Multi_49-56_Discount: 0.750
+Multi_57-64_Discount: 0.875
+
+#  Discount  Guide                    @16   @32   @48   @64
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+#  0.000 = 8 levels every 8 items     16    32    48    64
+#  0.125 = 7 levels every 8 items     14    28    42    56
+#  0.250 = 6 levels every 8 items     12    24    36    48
+#  0.375 = 5 levels every 8 items     10    20    30    40
+#  0.500 = 4 levels every 8 items      8    16    24    32
+#  0.625 = 3 levels every 8 items      6    12    18    24
+#  0.750 = 2 levels every 8 items      4     8    12    16
+#  0.875 = 1 level every 8 items       2     4     6     8
