@@ -6,6 +6,9 @@
 # (remember this includes all & color codes as well)
 Max_Char: 122
 
+# OP eats for free
+OP_Free: true
+
 # Number of levels to charge to rename one item
 Rename_Cost: 1
 
@@ -35,3 +38,6 @@ Multi_57-64_Discount: 0.875
 #  0.625 = 3 levels every 8 items      6    12    18    24
 #  0.750 = 2 levels every 8 items      4     8    12    16
 #  0.875 = 1 level every 8 items       2     4     6     8
+
+# Debugging
+DEBUG: false

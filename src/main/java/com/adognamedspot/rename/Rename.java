@@ -19,6 +19,7 @@ import net.md_5.bungee.api.ChatColor;
 public final class Rename extends JavaPlugin implements Listener {
 	
 	int MAX_CHAR;
+	boolean OP_Free;
 	int Rename_Cost;
 	String Rate_Type;
 	float Discount1;
@@ -29,6 +30,8 @@ public final class Rename extends JavaPlugin implements Listener {
 	float Discount6;
 	float Discount7;
 	float Discount8;
+	
+	static boolean DEBUG = false;
 	
 	private static Rename instance;
 	
@@ -90,7 +93,7 @@ public final class Rename extends JavaPlugin implements Listener {
 		}
 		int levels = p.getLevel();
 		int count = item.getAmount();
-		int cost = calculateCost(count);
+		int cost = calculateCost(p, count);
 		
 		
 		
@@ -121,7 +124,8 @@ public final class Rename extends JavaPlugin implements Listener {
 			return;
 		}
 		int levels = p.getLevel();
-		if (levels < Rename_Cost) {
+		int cost = calculateCost(p, 1);
+		if (levels < cost) {
 			p.sendMessage(ChatColor.RED + "You do not have enough levels to rename an item.");
 			return;
 		}
@@ -134,8 +138,8 @@ public final class Rename extends JavaPlugin implements Listener {
 		} else {
 			item = doName(item, str);
 		}
-		p.setLevel(levels - Rename_Cost);
-		p.sendMessage(ChatColor.WHITE + "Item renamed. Cost: " + ChatColor.GREEN + Rename_Cost + ChatColor.WHITE + " levels.");
+		p.setLevel(levels - cost);
+		p.sendMessage(ChatColor.WHITE + "Item renamed. Cost: " + ChatColor.GREEN + cost + ChatColor.WHITE + " levels.");
 	}
 
 	private void removeName(Player p) {
@@ -174,7 +178,9 @@ public final class Rename extends JavaPlugin implements Listener {
 
 	}
 	
-	private int calculateCost(int numberOfItems) {
+	private int calculateCost(Player p, int numberOfItems) {
+		if (p.isOp() && OP_Free) return 0;
+		if (numberOfItems == 1) return Rename_Cost;
 		switch (String.format(Rate_Type).toUpperCase()) {
 		case "SINGLE":
 			return numberOfItems * Rename_Cost;
@@ -256,7 +262,9 @@ public final class Rename extends JavaPlugin implements Listener {
 			num = num - sub;
 		}
 		sub = (int) (FullPrice - discount);
-//		Bukkit.getLogger().info("Full Price: " + FullPrice + "  Discount: " + discount + "  Final: " + sub);
+		
+		DEBUGLOG("Full Price: " + FullPrice + "  Discount(" + Rate_Type + "): " + discount + "  Final: " + sub);
+		
 		return sub;
 	}
 	
@@ -274,6 +282,7 @@ public final class Rename extends JavaPlugin implements Listener {
 		}
 		config = YamlConfiguration.loadConfiguration(file);
 		MAX_CHAR = config.getInt("Max_Char");
+		OP_Free = config.getBoolean("OP_Free");
 		Rename_Cost = config.getInt("Rename_Cost");
 		Rate_Type = config.getString("Multi_Rate");
 		Discount1 = (float)config.getDouble("Multi_2-8_Discount"); 
@@ -283,12 +292,13 @@ public final class Rename extends JavaPlugin implements Listener {
 		Discount5 = (float)config.getDouble("Multi_33-40_Discount"); 
 		Discount6 = (float)config.getDouble("Multi_41-48_Discount"); 
 		Discount7 = (float)config.getDouble("Multi_49-56_Discount"); 
-		Discount8 = (float)config.getDouble("Multi_57-64_Discount"); 
+		Discount8 = (float)config.getDouble("Multi_57-64_Discount");
+		DEBUG = config.getBoolean("DEBUG");
 	}
 	
 	private void useDefaultConfig() {
-		Bukkit.getLogger().info("[Rename] Configuration file not found. Using Default Values.");
 		MAX_CHAR = 122;
+		OP_Free = true;
 		Rename_Cost = 1;
 		Rate_Type = "PRORATE";
 		Discount1 = 0;
@@ -299,6 +309,9 @@ public final class Rename extends JavaPlugin implements Listener {
 		Discount6 = 0;
 		Discount7 = 0;
 		Discount8 = 0;
+		DEBUG = true;
+		
+		DEBUGLOG("[Rename] Configuration file not found. Using Default Values.");
 	}
 
     private void validateFiles() {
@@ -313,6 +326,13 @@ public final class Rename extends JavaPlugin implements Listener {
           if (!file.exists())
             instance.saveResource(name, false); 
         } 
+    }
+    
+    public void DEBUGLOG(String str) {
+    	// SpoT's mini debugger - 
+    	if (DEBUG) {
+    		Bukkit.getLogger().info(str);
+    	}
     }
 
 }
